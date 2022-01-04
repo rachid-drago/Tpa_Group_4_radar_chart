@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+<link rel="stylesheet" href="radar-chart.css">
+<head>
+  <style>
+      
+    body {
+      padding: 20px;
+    }
+    .radar-chart .area {
+      fill-opacity: 0.7;
+
+    }
+    .radar-chart.focus .area {
+      fill-opacity: 0.3;
+    }
+    .radar-chart.focus .area.focused {
+      fill-opacity: 0.9;
+    }
+    .area.germany, .germany .circle {
+      fill: #FFD700;
+      stroke: none;
+    }
+    .area.argentina, .argentina .circle {
+      fill: #ADD8E6;
+      stroke: none;
+    }
+  </style>
+
+  <script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
+  <script type="text/javascript" src="radar-chart.js"></script>
+  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+
+  </head>
+  <body>
+    <h1>Radar Chart Pour Visualiser chaque modele (a modifier)</h1>
+    
+
+    <textarea id="data" cols="60" rows="29"></textarea>
+
+    <div class="taglist">
+        <div class="item1">
+        <label class="lab"><input type="checkbox" class="c1" value="nom,nb_voitureN,BonusMalusN,RejetsCO2N,CoutEnergieN,puissanceN">header</label>
+        <label class="lab"><input type="checkbox" class="c2" value="S500,45.2,43.9,54.4,98.5,65.5">S500</label>
+        <label class="lab"><input type="checkbox" class="c3" value="1007 1.4,41.8,105.6,106.3,69.8,14.4">1007 1.4</label>
+        <label class="lab"><input type="checkbox" class="c4"value="Vel Satis 3.5 V6,52.3,43.9,54.4,63.7,52">Vel Satis 3.5 V6</label>
+        <label class="lab"><input type="checkbox" class="c5" value="9.3 1.8T,37.9,13.7,32.2,67.8,31">9.3 1.8T</label>
+        <label class="lab"><input type="checkbox"  class="c6" value="M5,99.8,110,110,62.9,110">M5</label>
+        <label class="lab"><input type="checkbox" class="c7" value="Laguna 2.0T,35.2,48.3,58.1,63.7,35.4">Laguna 2.0T</label> 
+        </div>
+        <div class="item2">
+        <label class="lab"><input type="checkbox"  class="c1" value="A200,24.1,43.9,54.4,98.5,27.9">A200</label>
+        <label class="lab"><input type="checkbox"  class="c2" value="X-Type 2.5 V6,75.1,10,13.7,90.3,41.4">X-Type 2.5 V6</label>
+        <label class="lab"><input type="checkbox"  class="c3" value="A2 1.4,110,110,110,110,14.4">A2 1.4</label>
+        <label class="lab"><input type="checkbox"  class="c4" value="Megane 2.0 16V,26.1,13.7,32.2,63.7,27.7">Megane 2.0 16V</label>
+        <label class="lab"><input type="checkbox"  class="c5" value="A3 2.0 FSI,10.6,35.1,47,110,31">A3 2.0 FSI</label>
+        <label class="lab"><input type="checkbox"  class="c6" value="Maxima 3.0 V6,19.6,88,91.5,42.8,42.1">Maxima 3.0 V6</label>
+        <label class="lab"><input type="checkbox"  class="c7" value="Superb 2.8 V6,19.7,61.5,69.3,65.3,40.5">Superb 2.8 V6</label>
+        </div>
+        <div class="item3">
+        <label class="lab"><input type="checkbox"  class="c1" value="Polo 1.2 6V,42.5,10,21.1,64.9,10">Polo 1.2 6V</label>
+        <label class="lab"><input type="checkbox"  class="c2" value="120i,21,35.1,47,62.9,31">120i</label>
+        <label class="lab"><input type="checkbox"  class="c3" value="S80 T6,52.3,70.4,76.7,10,58">S80 T6</label>
+        <label class="lab"><input type="checkbox"  class="c4" value="Croma 2.2,35.3,10,10,67.8,30.4">Croma 2.2</label>
+        <label class="lab"><input type="checkbox"  class="c5" value="Mondeo 1.8,35.2,70.4,76.7,67.8,25.5">Mondeo 1.8</label>
+        <label class="lab"><input type="checkbox"  class="c6" value="Almera 1.8,12.5,10,13.7,42.8,23.3">Almera 1.8</label>
+        <label class="lab"><input type="checkbox"  class="c7" value="Logan 1.6 MPI,12.4,26.3,39.6,67.8,17.7">Logan 1.6 MPI</label>
+        </div>
+        <div class="item4">
+        <label class="lab"><input type="checkbox"  class="c1" value="Primera 1.6,15.4,74.8,80.4,42.8,21.9">Primera 1.6</label>
+        <label class="lab"><input type="checkbox"   class="c2" value="Cuore 1.0,15.4,79.2,84.1,67.8,10.7">Cuore 1.0</label>
+        <label class="lab"><input type="checkbox"   class="c3" value="Golf 2.0 FSI,26.2,39.5,50.7,64.9,31">Golf 2.0 FSI</label>
+        <label class="lab"><input type="checkbox"  class="c4" value="Toledo 1.6,15.5,110,110,67.8,20.4">Toledo 1.6</label>
+        <label class="lab"><input type="checkbox"  class="c5" value="Copper 1.6 16V,13.5,110,110,60.8,23.3">Copper 1.6 16V</label>
+        <label class="lab"><input type="checkbox"  class="c6" value="Ypsilon 1.4 16V,12.3,30.7,43.3,67.8,17.7">Ypsilon 1.4 16V</label>
+        <label class="lab"><input type="checkbox"  class="c7" value="Picanto 1.1,15.7,57.1,65.6,66.1,12.2">Picanto 1.1</label>
+        <label class="lab"><input type="checkbox"  class="c8" value="New Beatle 1.8,10,79.2,84.1,64.9,22.2">New Beatle 1.8</label>
+        </div>
+    </div> 
+
+    
+<div class="last">
+ <label  class="lastlab">Width :<input type="number" name="w" id="w" class="form-control" value="700" min="200" max="2000" step="" required="required" title=""></label>
+ <label  class="lastlab">Height :<input type="number" name="h" id="h" class="form-control" value="700" min="200" max="2000" step="" required="required" title=""></label>
+ <button onclick='showRadar()' class="button" style="width:200px;height:50px;"><span>Draw !</span></button>
+</div>
+
+<script>
+/*$(document).ready(function(){
+    $(".taglist input").click(function(){
+         $("#data").text('');
+         $(".taglist :checked").each(function(){
+              $("#video0_tags").append( $(this).val() + "\n");
+         });
+    });
+});*/
+
+function updateTextArea() {     
+    var allVals = [];
+    $('.taglist :checked').each(function(i) {
+           
+        allVals.push((i!=0?"\r\n":"")+ $(this).val());
+    });
+    $('#data').val(allVals).attr('rows',allVals.length) ;
+     
+    }
+    $(function() {
+       $('.taglist input').click(updateTextArea);
+       updateTextArea();
+ });
+</script>
+
+<script type="text/javascript">
+
+  function showRadar(){
+    var data = [];
+    var chart = RadarChart.chart();
+  
+  var c = document.getElementById("data").value,
+      w = document.getElementById("w").value,
+      h = document.getElementById("h").value,
+  csv = c.split("\n").map(function(i){return i.split(",")})
+  headers = []
+  csv.forEach(function(item, i){
+    if(i==0){
+      headers = item;
+    }else{
+      newSeries = {};
+      item.forEach( function(v, j){
+        if(j==0){
+          newSeries.className = v;
+          newSeries.axes = [];
+        }else{
+          newSeries.axes.push({"axis":[headers[j]], "value": parseFloat(v)});
+        }
+      });
+      data.push(newSeries);
+    }
+  })
+RadarChart.defaultConfig.radius = 3;
+RadarChart.defaultConfig.w = w;
+RadarChart.defaultConfig.h = h;
+RadarChart.draw("#chart-container", data);
+function animate(elem,time) {
+    if( !elem) return;
+    var to = elem.offsetTop;
+    var from = window.scrollY;
+    var start = new Date().getTime(),
+        timer = setInterval(function() {
+            var step = Math.min(1,(new Date().getTime()-start)/time);
+            window.scrollTo(0,(from+step*(to-from))+1);
+            if( step == 1){ clearInterval(timer);};
+        },25);
+        window.scrollTo(0,(from+1));
+    }
+
+var divVal = document.getElementById('chart-container');
+animate(divVal,600);
+}
+
+function randomDataset() {
+  return data.map(function(d) {
+    return {
+      className: d.className,
+      axes: d.axes.map(function(axis) {
+        return {axis: axis.axis, value: Math.ceil(Math.random() * 10)};
+      })
+    };
+  });
+}
+
+
+</script>
+
+
+<div class="chart" id="chart-container"></div>
+<script type="text/javascript">
+    //RadarChart.defaultConfig.levelTick = true;
+  </script>
+
+</body>
+</html>
