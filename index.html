@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8">
-<link rel="stylesheet" href="pure-min.css">
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
 <link rel="stylesheet" href="radar-chart.css">
 <head>
   <style>
@@ -29,7 +29,7 @@
     }
   </style>
 
-  <script type="text/javascript" src="https://d3js.org/d3.v3.js"></script>
+  <script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
   <script type="text/javascript" src="radar-chart.js"></script>
   <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 
@@ -89,28 +89,24 @@
 </div>
 
 <script>
-/*$(document).ready(function(){
-    $(".taglist input").click(function(){
-         $("#data").text('');
-         $(".taglist :checked").each(function(){
-              $("#video0_tags").append( $(this).val() + "\n");
-         });
-    });
-});*/
 
-function updateTextArea() {     
-    var allVals = [];
-    $('.taglist :checked').each(function(i) {
-           
-        allVals.push((i!=0?"\r\n":"")+ $(this).val());
-    });
-    $('#data').val(allVals).attr('rows',allVals.length) ;
-     
-    }
-    $(function() {
-       $('.taglist input').click(updateTextArea);
-       updateTextArea();
- });
+
+ function updateTextArea() {
+  var allVals = $('#data').data('initialVal'),
+      lineCount = 1;
+  $('.taglist :checked').each(function(i) {
+    allVals+= (i != 0 || allVals.length > 0 ? "\r\n" : "") + $(this).val();
+    lineCount++;
+  });
+  $('#data').val(allVals).attr('rows', lineCount);
+
+}
+$(function() {
+  $('.taglist input').click(updateTextArea);
+  
+  $('#data').data('initialVal', $('#data').val());
+  updateTextArea();
+});
 </script>
 
 <script type="text/javascript">
